@@ -8,6 +8,7 @@ import pandas as pd
 from dateutil.relativedelta import relativedelta
 import calendar
 import math
+import os
 
 # MATPLOTLIB FIX: Set backend before importing matplotlib.pyplot
 import matplotlib
@@ -284,7 +285,7 @@ def create_commit_graph(repo_name, save_path):
     # Set the tick locations
     ax.set_xticks(tick_positions)
     
-    # Keep date labels HORIZONTAL - no rotation!
+    # Keep date labels horizontal
     plt.xticks(rotation=0, ha='center')
     
     # Add labels and title
@@ -379,7 +380,7 @@ def get_repositories():
     try:
         repos = fetch_repositories()
         
-        # Show all repositories (don't limit to 5)
+        # Show all repositories
         repo_data = []
         for repo in repos[:15]:  # Reasonable limit of 15 instead of 5
             repo_data.append({
@@ -499,10 +500,5 @@ def health_check():
         "graphs_folder": GRAPHS_FOLDER
     })
 
-if __name__ == '__main__':
-    print("🚀 Starting Flask server...")
-    print("📊 GitHub Commit Analyzer API")
-    print("🌐 Access your website at: http://localhost:5000")
-    print("📁 Graphs will be saved to:", GRAPHS_FOLDER)
-    
+if __name__ == '__main__' and os.environ.get("RENDER") != "true":
     app.run(debug=True, host='0.0.0.0', port=5000)
